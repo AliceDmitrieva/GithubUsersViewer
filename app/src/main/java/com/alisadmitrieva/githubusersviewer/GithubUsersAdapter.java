@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 public class GithubUsersAdapter extends BaseAdapter {
@@ -47,6 +49,7 @@ public class GithubUsersAdapter extends BaseAdapter {
         final ImageView userAvatarImageView = convertView.findViewById(R.id.userAvatar);
         final TextView userNameTextView = convertView.findViewById(R.id.userName);
 
+        Picasso.get().load(user.getAvatarUrl()).into(userAvatarImageView);
         userNameTextView.setText(user.getLogin());
 
         return convertView;
