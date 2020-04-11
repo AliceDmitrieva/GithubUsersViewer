@@ -2,6 +2,7 @@ package com.alisadmitrieva.githubusersviewer;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private CompositeDisposable disposable = new CompositeDisposable();
     private APIService apiService;
     private List<GithubUser> githubUsers = new ArrayList<>();
+    private GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
         apiService = createAPIService();
         getGithubUsersFromServer();
+
+        gridView = findViewById(R.id.gridview);
     }
 
     private APIService createAPIService() {
@@ -52,9 +56,8 @@ public class MainActivity extends AppCompatActivity {
                                            @Override
                                            public void onNext(List<GithubUser> users) {
                                                githubUsers.addAll(users);
-                                               for (GithubUser user : githubUsers) {
-                                                   Log.i(TAG, user.getId() + ":" + user.getLogin());
-                                               }
+                                               GithubUsersAdapter githubUsersAdapter = new GithubUsersAdapter(MainActivity.this, githubUsers);
+                                               gridView.setAdapter(githubUsersAdapter);
                                            }
 
                                            @Override
