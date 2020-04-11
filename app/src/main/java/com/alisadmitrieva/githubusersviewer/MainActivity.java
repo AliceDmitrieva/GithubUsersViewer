@@ -2,9 +2,9 @@ package com.alisadmitrieva.githubusersviewer;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.GridView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,17 +23,18 @@ public class MainActivity extends AppCompatActivity {
     private CompositeDisposable disposable = new CompositeDisposable();
     private APIService apiService;
     private List<GithubUser> githubUsers = new ArrayList<>();
-    private GridView gridView;
+
+    private ViewPager2 viewPager;
+    private GithubUsersViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        viewPager = findViewById(R.id.viewPager);
 
         apiService = createAPIService();
         getGithubUsersFromServer();
-
-        gridView = findViewById(R.id.gridview);
     }
 
     private APIService createAPIService() {
@@ -52,12 +53,11 @@ public class MainActivity extends AppCompatActivity {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeWith(new DisposableObserver<List<GithubUser>>() {
-
                                            @Override
                                            public void onNext(List<GithubUser> users) {
                                                githubUsers.addAll(users);
-                                               GithubUsersAdapter githubUsersAdapter = new GithubUsersAdapter(MainActivity.this, githubUsers);
-                                               gridView.setAdapter(githubUsersAdapter);
+                                               viewPagerAdapter = new GithubUsersViewPagerAdapter(MainActivity.this, githubUsers);
+                                               viewPager.setAdapter(viewPagerAdapter);
                                            }
 
                                            @Override
