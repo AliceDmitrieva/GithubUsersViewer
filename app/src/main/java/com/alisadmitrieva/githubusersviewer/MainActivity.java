@@ -26,12 +26,24 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
     private GithubUsersViewPagerAdapter viewPagerAdapter;
+    private ViewPager2.OnPageChangeCallback onPageChangeCallback;
+    private int lastUserID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         viewPager = findViewById(R.id.viewPager);
+        onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                getGithubUsersFromServer();
+            }
+        };
+        viewPagerAdapter = new GithubUsersViewPagerAdapter(MainActivity.this, githubUsers);
+        viewPager.registerOnPageChangeCallback(onPageChangeCallback);
+        viewPager.setAdapter(viewPagerAdapter);
 
         apiService = createAPIService();
         getGithubUsersFromServer();
@@ -49,15 +61,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void getGithubUsersFromServer() {
         disposable.add(
-                apiService.getUsers(1)
+                apiService.getUsers(lastUserID)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeWith(new DisposableObserver<List<GithubUser>>() {
                                            @Override
                                            public void onNext(List<GithubUser> users) {
+                                               githubUsers.clear();
                                                githubUsers.addAll(users);
-                                               viewPagerAdapter = new GithubUsersViewPagerAdapter(MainActivity.this, githubUsers);
-                                               viewPager.setAdapter(viewPagerAdapter);
+                                               viewPagerAdapter.notifyDataSetChanged();
+                                               lastUserID = githubUsers.get(githubUsers.size() - 1).getId();
                                            }
 
                                            @Override
@@ -72,6 +85,12 @@ public class MainActivity extends AppCompatActivity {
                                        }
                         )
         );
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewPager.unregisterOnPageChangeCallback(onPageChangeCallback);
     }
 
 }
