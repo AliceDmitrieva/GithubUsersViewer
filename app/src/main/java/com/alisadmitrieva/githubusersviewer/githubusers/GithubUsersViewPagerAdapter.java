@@ -1,9 +1,11 @@
-package com.alisadmitrieva.githubusersviewer;
+package com.alisadmitrieva.githubusersviewer.githubusers;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.alisadmitrieva.githubusersviewer.GithubUser;
 
 import java.util.List;
 

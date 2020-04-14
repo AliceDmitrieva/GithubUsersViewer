@@ -1,4 +1,4 @@
-package com.alisadmitrieva.githubusersviewer;
+package com.alisadmitrieva.githubusersviewer.githubusers;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+
+import com.alisadmitrieva.githubusersviewer.GithubUser;
+import com.alisadmitrieva.githubusersviewer.R;
 
 import java.util.ArrayList;
 import java.util.List;
