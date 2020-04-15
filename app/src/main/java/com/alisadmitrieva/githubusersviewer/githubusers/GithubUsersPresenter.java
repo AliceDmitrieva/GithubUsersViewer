@@ -34,6 +34,7 @@ public class GithubUsersPresenter implements GithubUsersContract.Presenter {
                                            //    githubUsers.clear();
                                            //    githubUsers.addAll(users);
                                                view.showUsers(users);
+                                               view.refreshData(users);
                                            }
 
                                            @Override

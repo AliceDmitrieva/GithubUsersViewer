@@ -9,6 +9,8 @@ public class GithubUsersContract {
     interface View {
         void showUsers(List<GithubUser> githubUsers);
 
+        void refreshData(List<GithubUser> githubUsers);
+
         void showErrorMessage(String message);
     }
 

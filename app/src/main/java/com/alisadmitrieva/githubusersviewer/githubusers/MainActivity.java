@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.alisadmitrieva.githubusersviewer.GithubUser;
 import com.alisadmitrieva.githubusersviewer.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements GithubUsersContract.View {
@@ -17,6 +18,8 @@ public class MainActivity extends AppCompatActivity implements GithubUsersContra
     private ViewPager2.OnPageChangeCallback onPageChangeCallback;
     private GithubUsersPresenter presenter;
     private int lastUserID = 0;
+    private GithubUsersViewPagerAdapter viewPagerAdapter;
+    private List<GithubUser> users = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +42,13 @@ public class MainActivity extends AppCompatActivity implements GithubUsersContra
     @Override
     public void showUsers(List<GithubUser> githubUsers) {
         lastUserID = githubUsers.get(githubUsers.size() - 1).getId();
+        users.clear();
+        users.addAll(githubUsers);
 
-        GithubUsersViewPagerAdapter viewPagerAdapter = new GithubUsersViewPagerAdapter(MainActivity.this, githubUsers);
-        viewPager.setAdapter(viewPagerAdapter);
+        if (viewPagerAdapter == null) {
+            viewPagerAdapter = new GithubUsersViewPagerAdapter(MainActivity.this, users);
+            viewPager.setAdapter(viewPagerAdapter);
+        }
         onPageChangeCallback = new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -51,6 +58,13 @@ public class MainActivity extends AppCompatActivity implements GithubUsersContra
             }
         };
         viewPager.registerOnPageChangeCallback(onPageChangeCallback);
+    }
+
+    @Override
+    public void refreshData(List<GithubUser> githubUsers) {
+        users.clear();
+        users.addAll(githubUsers);
+        viewPagerAdapter.notifyDataSetChanged();
     }
 
     @Override
