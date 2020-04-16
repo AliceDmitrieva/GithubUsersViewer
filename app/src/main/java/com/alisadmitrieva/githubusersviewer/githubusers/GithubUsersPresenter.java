@@ -21,7 +21,7 @@ public class GithubUsersPresenter implements GithubUsersContract.Presenter {
     }
 
     @Override
-    public void loadUsers(int lastUserID) {
+    public void loadUsers(int pageIndex, int lastUserID) {
         Repository repository = new Repository();
 
         disposable.add(
@@ -31,10 +31,7 @@ public class GithubUsersPresenter implements GithubUsersContract.Presenter {
                         .subscribeWith(new DisposableObserver<List<GithubUser>>() {
                                            @Override
                                            public void onNext(List<GithubUser> users) {
-                                           //    githubUsers.clear();
-                                           //    githubUsers.addAll(users);
-                                               view.showUsers(users);
-                                               view.refreshData(users);
+                                               view.showUsers(pageIndex, users);
                                            }
 
                                            @Override
