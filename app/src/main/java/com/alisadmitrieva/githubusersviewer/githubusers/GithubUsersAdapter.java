@@ -1,4 +1,4 @@
-package com.alisadmitrieva.githubusersviewer;
+package com.alisadmitrieva.githubusersviewer.githubusers;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.alisadmitrieva.githubusersviewer.GithubUser;
+import com.alisadmitrieva.githubusersviewer.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
